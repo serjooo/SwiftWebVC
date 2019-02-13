@@ -9,8 +9,9 @@
 import WebKit
 
 public protocol SwiftWebVCDelegate: class {
-    func didStartLoading()
-    func didFinishLoading(success: Bool)
+    func doneTappedOnSwiftWebVC(_ swiftWebVC: SwiftWebVC)
+    func swiftWebVC(_ swiftWebVC: SwiftWebVC, didStartLoadingPage url: URL?)
+    func swiftWebVC(_ swiftWebVC: SwiftWebVC, didFinishLoading isSuccess: Bool, page url: URL?)
 }
 
 public class SwiftWebVC: UIViewController {
@@ -269,7 +270,11 @@ public class SwiftWebVC: UIViewController {
     @objc func doneButtonTapped() {
         closing = true
         UINavigationBar.appearance().barStyle = storedStatusColor!
-        self.dismiss(animated: true, completion: nil)
+        if let delegate = delegate {
+            delegate.doneTappedOnSwiftWebVC(self)
+        } else {
+            self.dismiss(animated: true, completion: nil)
+        }
     }
 
     // MARK: - Class Methods
@@ -296,13 +301,13 @@ extension SwiftWebVC: WKUIDelegate {
 extension SwiftWebVC: WKNavigationDelegate {
     
     public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-        self.delegate?.didStartLoading()
+        delegate?.swiftWebVC(self, didStartLoadingPage: webView.url)
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
         updateToolbarItems()
     }
     
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        self.delegate?.didFinishLoading(success: true)
+        delegate?.swiftWebVC(self, didFinishLoading: true, page: webView.url)
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         
         webView.evaluateJavaScript("document.title", completionHandler: {(response, error) in
@@ -314,7 +319,7 @@ extension SwiftWebVC: WKNavigationDelegate {
     }
     
     public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        self.delegate?.didFinishLoading(success: false)
+        delegate?.swiftWebVC(self, didFinishLoading: false, page: webView.url)
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
         updateToolbarItems()
     }
