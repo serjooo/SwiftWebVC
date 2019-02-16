@@ -168,6 +168,10 @@ public class SwiftWebVC: UIViewController {
         super.viewDidDisappear(true)
         UIApplication.shared.isNetworkActivityIndicatorVisible = false
     }
+
+    public override var preferredStatusBarStyle: UIStatusBarStyle {
+        return navigationController?.preferredStatusBarStyle ?? .default
+    }
     
     ////////////////////////////////////////////////
     // Toolbar
