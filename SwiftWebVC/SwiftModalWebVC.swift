@@ -10,7 +10,7 @@ import UIKit
 
 public class SwiftModalWebVC: UINavigationController {
     
-    private var theme: Theme
+    private var theme: Theme = .lightBlue
     weak var webViewDelegate: UIWebViewDelegate? = nil
     
     public convenience init(urlString: String, sharingEnabled: Bool = true) {
@@ -39,12 +39,20 @@ public class SwiftModalWebVC: UINavigationController {
         webViewController.sharingEnabled = sharingEnabled
         webViewController.storedStatusColor = UINavigationBar.appearance().barStyle
         
-        let dismissButtonImageName = (dismissButtonStyle == .arrow) ? "SwiftWebVCDismiss" : "SwiftWebVCDismissAlt"
-        let doneButton = UIBarButtonItem(image: SwiftWebVC.bundledImage(named: dismissButtonImageName),
+        var doneButton: UIBarButtonItem
+        switch dismissButtonStyle {
+        case .arrow, .cross:
+            let dismissButtonImageName = (dismissButtonStyle == .arrow) ? "SwiftWebVCDismiss" : "SwiftWebVCDismissAlt"
+            doneButton = UIBarButtonItem(image: SwiftWebVC.bundledImage(named: dismissButtonImageName),
                                          style: UIBarButtonItem.Style.plain,
                                          target: webViewController,
                                          action: #selector(SwiftWebVC.doneButtonTapped))
-        self.theme = theme
+        case .done:
+            doneButton = UIBarButtonItem(barButtonSystemItem: .done,
+                                         target: webViewController,
+                                         action: #selector(SwiftWebVC.doneButtonTapped))
+        }
+
         switch theme {
         case .lightBlue:
             doneButton.tintColor = nil
@@ -70,10 +78,10 @@ public class SwiftModalWebVC: UINavigationController {
             webViewController.navigationItem.rightBarButtonItem = doneButton
         }
         super.init(rootViewController: webViewController)
+        self.theme = theme
     }
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        self.theme = .lightBlue
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
 
@@ -98,7 +106,7 @@ extension SwiftModalWebVC {
     }
 
     public enum DismissButtonStyle {
-        case arrow, cross
+        case arrow, cross, done
     }
 
 }

@@ -52,12 +52,17 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: SwiftWebVCDelegate {
-    
-    func didStartLoading() {
-        print("Started loading.")
+
+    func doneTappedOnSwiftWebVC(_ swiftWebVC: SwiftWebVC) {
+        swiftWebVC.dismiss(animated: true, completion: nil)
     }
-    
-    func didFinishLoading(success: Bool) {
-        print("Finished loading. Success: \(success).")
+
+    func swiftWebVC(_ swiftWebVC: SwiftWebVC, didStartLoadingPage url: URL?) {
+        print("Started loading. \(url)")
     }
+
+    func swiftWebVC(_ swiftWebVC: SwiftWebVC, didFinishLoading isSuccess: Bool, page url: URL?) {
+        print("Finished loading. Success: \(isSuccess).")
+    }
+
 }
