@@ -10,19 +10,8 @@ import UIKit
 
 public class SwiftModalWebVC: UINavigationController {
     
-    public enum SwiftModalWebVCTheme {
-        case lightBlue, lightBlack, dark
-    }
-    public enum SwiftModalWebVCDismissButtonStyle {
-        case arrow, cross
-    }
-    
+    private let theme: Theme
     weak var webViewDelegate: UIWebViewDelegate? = nil
-    private let theme: SwiftModalWebVCTheme
-
-    public override var preferredStatusBarStyle: UIStatusBarStyle {
-        return theme == .dark ? .lightContent : .default
-    }
     
     public convenience init(urlString: String, sharingEnabled: Bool = true) {
         var urlString = urlString
@@ -32,7 +21,7 @@ public class SwiftModalWebVC: UINavigationController {
         self.init(pageURL: URL(string: urlString)!, sharingEnabled: sharingEnabled)
     }
     
-    public convenience init(urlString: String, theme: SwiftModalWebVCTheme, dismissButtonStyle: SwiftModalWebVCDismissButtonStyle, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate? = nil) {
+    public convenience init(urlString: String, theme: Theme, dismissButtonStyle: DismissButtonStyle, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate? = nil) {
         self.init(pageURL: URL(string: urlString)!, theme: theme, dismissButtonStyle: dismissButtonStyle, sharingEnabled: sharingEnabled, delegate: delegate)
     }
     
@@ -40,11 +29,11 @@ public class SwiftModalWebVC: UINavigationController {
         self.init(request: URLRequest(url: pageURL), sharingEnabled: sharingEnabled, delegate: delegate)
     }
     
-    public convenience init(pageURL: URL, theme: SwiftModalWebVCTheme, dismissButtonStyle: SwiftModalWebVCDismissButtonStyle, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate? = nil) {
+    public convenience init(pageURL: URL, theme: Theme, dismissButtonStyle: DismissButtonStyle, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate? = nil) {
         self.init(request: URLRequest(url: pageURL), theme: theme, dismissButtonStyle: dismissButtonStyle, sharingEnabled: sharingEnabled, delegate: delegate)
     }
     
-    public init(request: URLRequest, theme: SwiftModalWebVCTheme = .lightBlue, dismissButtonStyle: SwiftModalWebVCDismissButtonStyle = .arrow, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate?) {
+    public init(request: URLRequest, theme: Theme = .lightBlue, dismissButtonStyle: DismissButtonStyle = .arrow, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate?) {
         let webViewController = SwiftWebVC(aRequest: request)
         webViewController.delegate = delegate
         webViewController.sharingEnabled = sharingEnabled
@@ -96,4 +85,21 @@ public class SwiftModalWebVC: UINavigationController {
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(false)
     }
+
+    public override var preferredStatusBarStyle: UIStatusBarStyle {
+        return theme == .dark ? .lightContent : .default
+    }
+
+}
+
+extension SwiftModalWebVC {
+
+    public enum Theme {
+        case lightBlue, lightBlack, dark
+    }
+
+    public enum DismissButtonStyle {
+        case arrow, cross
+    }
+
 }
