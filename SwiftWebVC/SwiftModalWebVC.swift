@@ -18,6 +18,11 @@ public class SwiftModalWebVC: UINavigationController {
     }
     
     weak var webViewDelegate: UIWebViewDelegate? = nil
+    private let theme: SwiftModalWebVCTheme
+
+    public override var preferredStatusBarStyle: UIStatusBarStyle {
+        return theme == .dark ? .lightContent : .default
+    }
     
     public convenience init(urlString: String, sharingEnabled: Bool = true) {
         var urlString = urlString
@@ -50,7 +55,7 @@ public class SwiftModalWebVC: UINavigationController {
                                          style: UIBarButtonItem.Style.plain,
                                          target: webViewController,
                                          action: #selector(SwiftWebVC.doneButtonTapped))
-        
+        self.theme = theme
         switch theme {
         case .lightBlue:
             doneButton.tintColor = nil
@@ -78,10 +83,12 @@ public class SwiftModalWebVC: UINavigationController {
         super.init(rootViewController: webViewController)
     }
     
+    /*
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-    
+    */
+
     required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
