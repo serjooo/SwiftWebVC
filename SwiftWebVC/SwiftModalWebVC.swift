@@ -10,7 +10,7 @@ import UIKit
 
 public class SwiftModalWebVC: UINavigationController {
     
-    private let theme: Theme
+    private var theme: Theme
     weak var webViewDelegate: UIWebViewDelegate? = nil
     
     public convenience init(urlString: String, sharingEnabled: Bool = true) {
@@ -72,11 +72,10 @@ public class SwiftModalWebVC: UINavigationController {
         super.init(rootViewController: webViewController)
     }
     
-    /*
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        self.theme = .lightBlue
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
-    */
 
     required public init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
