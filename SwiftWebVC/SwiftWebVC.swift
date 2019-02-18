@@ -12,6 +12,7 @@ public protocol SwiftWebVCDelegate: class {
     func doneTappedOnSwiftWebVC(_ swiftWebVC: SwiftWebVC)
     func swiftWebVC(_ swiftWebVC: SwiftWebVC, didStartLoadingPage url: URL?)
     func swiftWebVC(_ swiftWebVC: SwiftWebVC, didFinishLoading isSuccess: Bool, page url: URL?)
+    func swiftWebVC(_ swiftWebVC: SwiftWebVC, didReceiveResponse response: URLResponse)
 }
 
 public class SwiftWebVC: UIViewController {
@@ -371,6 +372,11 @@ extension SwiftWebVC: WKNavigationDelegate {
         
         decisionHandler(.allow)
         
+    }
+
+    public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+        delegate?.swiftWebVC(self, didReceiveResponse: navigationResponse.response)
+        decisionHandler(.allow)
     }
     
     func openCustomApp(urlScheme: String, additional_info:String){
