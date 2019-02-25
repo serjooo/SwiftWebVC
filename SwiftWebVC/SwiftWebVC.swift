@@ -76,6 +76,8 @@ public class SwiftWebVC: UIViewController {
     }()
     
     var request: URLRequest!
+
+    var html: String?
     
     var navBarTitle: UILabel!
     
@@ -110,6 +112,13 @@ public class SwiftWebVC: UIViewController {
         self.request = aRequest
         self.hideToolBar = hideToolBar
     }
+
+    public convenience init(html: String, sharingEnabled: Bool = true, hideToolBar: Bool = false) {
+        self.init()
+        self.sharingEnabled = sharingEnabled
+        self.hideToolBar = hideToolBar
+        self.html = html
+    }
     
     func loadRequest(_ request: URLRequest) {
         webView.load(request)
@@ -120,7 +129,11 @@ public class SwiftWebVC: UIViewController {
     
     override public func loadView() {
         view = webView
-        loadRequest(request)
+        guard let html = html else {
+            loadRequest(request)
+            return
+        }
+        self.webView.loadHTMLString(html, baseURL: nil)
     }
     
     override public func viewDidLoad() {

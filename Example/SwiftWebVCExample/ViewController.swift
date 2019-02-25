@@ -65,4 +65,8 @@ extension ViewController: SwiftWebVCDelegate {
         print("Finished loading. Success: \(isSuccess).")
     }
 
+    func swiftWebVC(_ swiftWebVC: SwiftWebVC, didReceiveResponse response: URLResponse) {
+        print("Did receive response \(response)")
+    }
+
 }

@@ -32,13 +32,21 @@ public class SwiftModalWebVC: UINavigationController {
     public convenience init(pageURL: URL, theme: Theme, dismissButtonStyle: DismissButtonStyle, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate? = nil) {
         self.init(request: URLRequest(url: pageURL), theme: theme, dismissButtonStyle: dismissButtonStyle, sharingEnabled: sharingEnabled, delegate: delegate)
     }
+
+    public convenience init(html: String, theme: Theme = .lightBlue, dismissButtonStyle: DismissButtonStyle = .arrow, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate?) {
+        self.init(request: nil, htmlString: html, theme: theme, dismissButtonStyle: dismissButtonStyle, sharingEnabled: sharingEnabled, delegate: delegate)
+    }
+
+    public convenience init(request: URLRequest, theme: Theme = .lightBlue, dismissButtonStyle: DismissButtonStyle = .arrow, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate?) {
+        self.init(request: request, htmlString: nil, theme: theme, dismissButtonStyle: dismissButtonStyle, sharingEnabled: sharingEnabled, delegate: delegate)
+    }
     
-    public init(request: URLRequest, theme: Theme = .lightBlue, dismissButtonStyle: DismissButtonStyle = .arrow, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate?) {
-        let webViewController = SwiftWebVC(aRequest: request)
+    fileprivate init(request: URLRequest?, htmlString: String?, theme: Theme = .lightBlue, dismissButtonStyle: DismissButtonStyle = .arrow, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate?) {
+        let webViewController = htmlString == nil ? SwiftWebVC(aRequest: request!) : SwiftWebVC(html: htmlString!)
         webViewController.delegate = delegate
         webViewController.sharingEnabled = sharingEnabled
         webViewController.storedStatusColor = UINavigationBar.appearance().barStyle
-        
+
         var doneButton: UIBarButtonItem
         switch dismissButtonStyle {
         case .arrow, .cross:
@@ -70,7 +78,7 @@ public class SwiftModalWebVC: UINavigationController {
             webViewController.titleColor = UIColor.groupTableViewBackground
             UINavigationBar.appearance().barStyle = UIBarStyle.black
         }
-        
+
         if (UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad) {
             webViewController.navigationItem.leftBarButtonItem = doneButton
         }
