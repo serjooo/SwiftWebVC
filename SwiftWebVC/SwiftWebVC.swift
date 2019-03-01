@@ -13,6 +13,7 @@ public protocol SwiftWebVCDelegate: class {
     func swiftWebVC(_ swiftWebVC: SwiftWebVC, didStartLoadingPage url: URL?)
     func swiftWebVC(_ swiftWebVC: SwiftWebVC, didFinishLoading isSuccess: Bool, page url: URL?)
     func swiftWebVC(_ swiftWebVC: SwiftWebVC, didReceiveResponse response: URLResponse)
+    func swiftWebVC(_ swiftWebVC: SwiftWebVC, didDecideNavigationPolicy url: URL)
 }
 
 public class SwiftWebVC: UIViewController {
@@ -388,7 +389,9 @@ extension SwiftWebVC: WKNavigationDelegate {
         }
         
         decisionHandler(.allow)
-        
+
+        guard let theURL = url else { return }
+        delegate?.swiftWebVC(self, didDecideNavigationPolicy: theURL)
     }
 
     public func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {

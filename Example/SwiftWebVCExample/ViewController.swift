@@ -69,4 +69,8 @@ extension ViewController: SwiftWebVCDelegate {
         print("Did receive response \(response)")
     }
 
+    func swiftWebVC(_ swiftWebVC: SwiftWebVC, didDecideNavigationPolicy url: URL) {
+        print("Did decideNavigationPolicy for \(url)")
+    }
+
 }
