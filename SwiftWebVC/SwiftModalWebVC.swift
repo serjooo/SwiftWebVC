@@ -14,32 +14,32 @@ public class SwiftModalWebVC: UINavigationController {
     private var theme: Theme = .lightBlue
     weak var webViewDelegate: UIWebViewDelegate? = nil
     
-    public convenience init(urlString: String, sharingEnabled: Bool = true) {
+    public convenience init(urlString: String, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), sharingEnabled: Bool = true) {
         var urlString = urlString
         if !urlString.hasPrefix("https://") && !urlString.hasPrefix("http://") {
             urlString = "https://"+urlString
         }
-        self.init(pageURL: URL(string: urlString)!, sharingEnabled: sharingEnabled)
+        self.init(pageURL: URL(string: urlString)!, configuration: configuration, sharingEnabled: sharingEnabled)
     }
     
-    public convenience init(urlString: String, theme: Theme, dismissButtonStyle: DismissButtonStyle, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate? = nil) {
-        self.init(pageURL: URL(string: urlString)!, theme: theme, dismissButtonStyle: dismissButtonStyle, sharingEnabled: sharingEnabled, delegate: delegate)
+    public convenience init(urlString: String, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), theme: Theme, dismissButtonStyle: DismissButtonStyle, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate? = nil) {
+        self.init(pageURL: URL(string: urlString)!, configuration: configuration, theme: theme, dismissButtonStyle: dismissButtonStyle, sharingEnabled: sharingEnabled, delegate: delegate)
     }
     
-    public convenience init(pageURL: URL, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate? = nil) {
-        self.init(request: URLRequest(url: pageURL), sharingEnabled: sharingEnabled, delegate: delegate)
+    public convenience init(pageURL: URL, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate? = nil) {
+        self.init(request: URLRequest(url: pageURL), configuration: configuration, sharingEnabled: sharingEnabled, delegate: delegate)
     }
     
-    public convenience init(pageURL: URL, theme: Theme, dismissButtonStyle: DismissButtonStyle, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate? = nil) {
-        self.init(request: URLRequest(url: pageURL), theme: theme, dismissButtonStyle: dismissButtonStyle, sharingEnabled: sharingEnabled, delegate: delegate)
+    public convenience init(pageURL: URL, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), theme: Theme, dismissButtonStyle: DismissButtonStyle, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate? = nil) {
+        self.init(request: URLRequest(url: pageURL), configuration: configuration, theme: theme, dismissButtonStyle: dismissButtonStyle, sharingEnabled: sharingEnabled, delegate: delegate)
     }
 
-    public convenience init(html: String, theme: Theme = .lightBlue, dismissButtonStyle: DismissButtonStyle = .arrow, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate?) {
-        self.init(request: nil, htmlString: html, theme: theme, dismissButtonStyle: dismissButtonStyle, sharingEnabled: sharingEnabled, delegate: delegate)
+    public convenience init(html: String, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), theme: Theme = .lightBlue, dismissButtonStyle: DismissButtonStyle = .arrow, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate?) {
+        self.init(request: nil, htmlString: html, configuration: configuration, theme: theme, dismissButtonStyle: dismissButtonStyle, sharingEnabled: sharingEnabled, delegate: delegate)
     }
 
-    public convenience init(request: URLRequest, theme: Theme = .lightBlue, dismissButtonStyle: DismissButtonStyle = .arrow, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate?) {
-        self.init(request: request, htmlString: nil, theme: theme, dismissButtonStyle: dismissButtonStyle, sharingEnabled: sharingEnabled, delegate: delegate)
+    public convenience init(request: URLRequest, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), theme: Theme = .lightBlue, dismissButtonStyle: DismissButtonStyle = .arrow, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate?) {
+        self.init(request: request, htmlString: nil, configuration: configuration, theme: theme, dismissButtonStyle: dismissButtonStyle, sharingEnabled: sharingEnabled, delegate: delegate)
     }
     
     fileprivate init(request: URLRequest?, htmlString: String?, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), theme: Theme = .lightBlue, dismissButtonStyle: DismissButtonStyle = .arrow, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate?) {
