@@ -69,7 +69,7 @@ public class SwiftWebVC: UIViewController {
     
     
     lazy var webView: WKWebView = {
-        var tempWebView = WKWebView(frame: UIScreen.main.bounds)
+        var tempWebView = WKWebView(frame: UIScreen.main.bounds, configuration: configuration)
         tempWebView.uiDelegate = self
         tempWebView.navigationDelegate = self
         return tempWebView;
@@ -78,6 +78,8 @@ public class SwiftWebVC: UIViewController {
     var request: URLRequest!
 
     var html: String?
+
+    var configuration: WKWebViewConfiguration!
     
     var navBarTitle: UILabel!
     
@@ -94,27 +96,29 @@ public class SwiftWebVC: UIViewController {
         webView.navigationDelegate = nil;
     }
     
-    public convenience init(urlString: String, sharingEnabled: Bool = true, hideToolBar: Bool = false) {
+    public convenience init(urlString: String, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), sharingEnabled: Bool = true, hideToolBar: Bool = false) {
         var urlString = urlString
         if !urlString.hasPrefix("https://") && !urlString.hasPrefix("http://") {
             urlString = "https://"+urlString
         }
-        self.init(pageURL: URL(string: urlString)!, sharingEnabled: sharingEnabled, hideToolBar: hideToolBar)
+        self.init(pageURL: URL(string: urlString)!, configuration: configuration, sharingEnabled: sharingEnabled, hideToolBar: hideToolBar)
     }
     
-    public convenience init(pageURL: URL, sharingEnabled: Bool = true, hideToolBar: Bool = false) {
-        self.init(aRequest: URLRequest(url: pageURL), sharingEnabled: sharingEnabled, hideToolBar: hideToolBar)
+    public convenience init(pageURL: URL, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), sharingEnabled: Bool = true, hideToolBar: Bool = false) {
+        self.init(aRequest: URLRequest(url: pageURL), configuration: configuration, sharingEnabled: sharingEnabled, hideToolBar: hideToolBar)
     }
     
-    public convenience init(aRequest: URLRequest, sharingEnabled: Bool = true, hideToolBar: Bool = false) {
+    public convenience init(aRequest: URLRequest, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), sharingEnabled: Bool = true, hideToolBar: Bool = false) {
         self.init()
+        self.configuration = configuration
         self.sharingEnabled = sharingEnabled
         self.request = aRequest
         self.hideToolBar = hideToolBar
     }
 
-    public convenience init(html: String, sharingEnabled: Bool = true, hideToolBar: Bool = false) {
+    public convenience init(html: String, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), sharingEnabled: Bool = true, hideToolBar: Bool = false) {
         self.init()
+        self.configuration = configuration
         self.sharingEnabled = sharingEnabled
         self.hideToolBar = hideToolBar
         self.html = html

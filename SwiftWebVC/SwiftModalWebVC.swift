@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WebKit
 
 public class SwiftModalWebVC: UINavigationController {
     
@@ -41,8 +42,8 @@ public class SwiftModalWebVC: UINavigationController {
         self.init(request: request, htmlString: nil, theme: theme, dismissButtonStyle: dismissButtonStyle, sharingEnabled: sharingEnabled, delegate: delegate)
     }
     
-    fileprivate init(request: URLRequest?, htmlString: String?, theme: Theme = .lightBlue, dismissButtonStyle: DismissButtonStyle = .arrow, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate?) {
-        let webViewController = htmlString == nil ? SwiftWebVC(aRequest: request!) : SwiftWebVC(html: htmlString!)
+    fileprivate init(request: URLRequest?, htmlString: String?, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), theme: Theme = .lightBlue, dismissButtonStyle: DismissButtonStyle = .arrow, sharingEnabled: Bool = true, delegate: SwiftWebVCDelegate?) {
+        let webViewController = htmlString == nil ? SwiftWebVC(aRequest: request!, configuration: configuration) : SwiftWebVC(html: htmlString!, configuration: configuration)
         webViewController.delegate = delegate
         webViewController.sharingEnabled = sharingEnabled
         webViewController.storedStatusColor = UINavigationBar.appearance().barStyle
